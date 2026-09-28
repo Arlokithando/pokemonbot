@@ -31,4 +31,11 @@ class Pokemon:
         return f"Pokémonunuzun ismi: {self.name}"  # Pokémon adını içeren dizeyi döndürür
 
     async def show_img(self):
-        # PokeAPI aracılığıyla bir pokémon görüntüsünün URL'sini almak için asenktron metot
+        url = f'https://pokeapi.co/api/v2/pokemon/{self.pokemon_number}'  # İstek için URL API
+
+        async with aiohttp.ClientSession() as session:  #  HTTP oturumu açma
+                    async with session.get(url) as response:  # GET isteği gönderme
+                        if response.status == 200:
+                            data = await response.json()
+                            return data ["sprites"]["front_default"]
+                        else: return None
