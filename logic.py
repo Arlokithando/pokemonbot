@@ -8,6 +8,8 @@ class Pokemon:
         self.pokemon_trainer = pokemon_trainer
         self.pokemon_number = random.randint(1, 1000)
         self.name = None
+        self.power = random.randint(30,60)
+        self.hp = random.randint(200,400)
         if pokemon_trainer not in Pokemon.pokemons:
             Pokemon.pokemons[pokemon_trainer] = self
         else:
@@ -39,3 +41,20 @@ class Pokemon:
                             data = await response.json()
                             return data ["sprites"]["front_default"]
                         else: return None
+    async def attack(self,enemy):
+         if enemy.hp > self.power:
+              enemy.hp -= self.power
+              return f"Pokémon eğitmeni @{self.pokemon_trainer} @{enemy.pokemon_trainer}'ne saldırdı\n@{enemy.pokemon_trainer}'nin sağlık durumu {enemy.hp}"
+         else:
+              enemy.hp = 0
+              return f"Pokémon eğitmeni @{self.pokemon_trainer} @{enemy.pokemon_trainer}'ni yendi!"
+class Wizzard(Pokemon):
+     pass
+
+class Fighter(Pokemon):
+    async def attack (self,enemy):
+         superpower = random.randint(5,15)
+         self.power += superpower
+         result = await super().attack(enemy)
+         self.power -= superpower
+         return result + f"\nDövüşçü Pokémon süper saldırı kullandı. Eklenen güç: {superpower}"
